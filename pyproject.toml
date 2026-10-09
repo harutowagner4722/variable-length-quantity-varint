@@ -1,6 +1,6 @@
 [project]
 name = "variable-length-quantity-varint"
-version = "0.1.0"
+version = "0.1.1"
 description = "Encodes and decodes non-negative integers using LEB128, producing compact byte sequences for size-efficient serialization of small integers."
 requires-python = ">=3.10"
 dependencies = []
