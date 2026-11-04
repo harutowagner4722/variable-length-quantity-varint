@@ -21,3 +21,10 @@ Small integers dominate most serialized data — lengths, field tags, enum ordin
 - **Non-minimal encodings are rejected.** `0` has exactly one canonical form, `b'\x00'`; `b'\x80\x00'` raises `DecodeError`. If you need to accept redundant encodings from another producer, pre-normalize before calling `decode`.
 - **`bool` is rejected by `encode`** even though it is a subclass of `int` in Python, because silently writing `True` as `b'\x01'` is almost always a caller bug.
 - **A 10-byte ceiling is enforced** on decode. A 10-byte LEB128 stream carries 70 bits, which covers every unsigned 64-bit integer; anything longer is truncated or hostile and raises `DecodeError`.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
